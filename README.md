@@ -4,7 +4,7 @@ This is a tool to encrypt passwords with Cisco's type 7 encryption, and to rever
 
 ## Building
 
-If you have GNU `make` installed, just invoking `make` will build both the encryptor (`enseven`) and the decryptor (`unseven`). It assumes a POSIX system (for `fileno`; `-D_POSIX_C_SOURCE`) and a GNU system (for `getline`; `-D_GNU_SOURCE`).
+If you have GNU `make` installed, just invoking `make` will build both the encryptor (`enseven`) and the decryptor (`unseven`). It assumes a POSIX system (for `fileno`; `-D_POSIX_C_SOURCE`).
 
 ## Using
 

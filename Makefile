@@ -1,6 +1,6 @@
 CC = gcc
 WARNS = -Wall -Wextra -pedantic -Werror
-DEFS = -D_POSIX_C_SOURCE -D_GNU_SOURCE
+DEFS = -D_POSIX_C_SOURCE
 CFLAGS := $(WARNS) $(DEFS) -ansi $(CFLAGS)
 TARGS = unseven enseven
 

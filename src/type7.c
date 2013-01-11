@@ -20,55 +20,50 @@ char *unseven(const char*);
 char *enseven(const char*);
 
 
+char *next(int argc, char **argv)
+{
+    static char buf[54];
+
+    if (argv == NULL) {
+        fgets(buf, 54, stdin);
+        
+        if (!*buf)
+            return NULL;
+            
+        if (buf[strlen(buf) - 1] != '\n') {
+            char c;
+            while ((c = getchar()) != '\n' && c != EOF);
+        }
+
+        return buf;
+    } else {
+        static int ind = 0;
+
+        return ++ind < argc ? argv[ind] : NULL;
+    }
+}
+
+
 int main(int argc, char **argv)
 {
     int from_stdin, encrypt;
+    char *buf;
 
     if ((encrypt = strstr(argv[0], "enseven") != NULL))
         srand((unsigned int)time(NULL));
 
     from_stdin = !isatty(fileno(stdin));
-    if (!from_stdin) {
-        ++argv;
-        --argc;
-    }
+    if (!from_stdin && argc < 2) usage();
 
-    if (!from_stdin && !argc) usage();
+    while ((buf = next(argc, from_stdin ? NULL : argv))) {
+        char *s = encrypt ? enseven(buf) : unseven(buf);
 
-
-    if (from_stdin) {
-        char *line = NULL;
-        size_t n;
-        ssize_t ss;
-
-        while ((ss = getline(&line, &n, stdin)) >= 0) {
-            char *s;
-
-            if (line[--ss] == '\n') line[ss] = 0;
-            s = encrypt ? enseven(line) : unseven(line);
-
-            printf("%s\t%s\n", line, s);
-
-            free(line);
-            free(s);
-
-            line = NULL;
-        }
-
-    } else {
-        int i;
-
-        for (i = 0; i < argc; ++i) {
-            char *s = encrypt ? enseven(argv[i]) : unseven(argv[i]);
-
-            if (s == NULL)
-                fprintf(stderr, "! Error: %s\n", argv[i]);
-            else
-                printf("%s\t%s\n", argv[i], s);
-
+        if (s == NULL)
+            fprintf(stderr, "! Error: %s\n", buf);
+        else {
+            printf("%s\t%s\n", buf, s);
             free(s);
         }
-
     }
 
     return 0;
