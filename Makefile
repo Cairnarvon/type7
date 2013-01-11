@@ -6,9 +6,12 @@ TARGS = unseven enseven
 
 all: $(TARGS)
 
-unseven enseven: src/type7.c
-	$(CC) -o $@ $(CFLAGS) $<
-	
+unseven enseven: src/main.c type7.o
+	$(CC) -o $@ $(CFLAGS) $^
+
+type7.o: src/type7.c
+	$(CC) -c $(CFLAGS) $<
+
 .PHONY: clean
 clean:
 	rm -f $(TARGS)
